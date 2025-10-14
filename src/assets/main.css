@@ -26,14 +26,14 @@ a,
 }
 
 @media (min-width: 1024px) {
+  /* 保持普通文档流，避免页面被分成左右两列 */
   body {
-    display: flex;
-    place-items: center;
+    display: block;
+    place-items: initial;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    display: block;
+    padding: 0 2rem; /* 保留左右内边距 */
   }
 }
