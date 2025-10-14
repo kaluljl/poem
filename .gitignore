@@ -7,24 +7,81 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-/cypress/videos/
-/cypress/screenshots/
+# Coverage
+coverage/
+.nyc_output/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Build output
+dist/
+build/
+tmp/
+temp/
+out/
+storybook-static/
 
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Cache
+.cache/
+.vite/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.turbo/
+.eslintcache
+.stylelintcache
+
+# TypeScript
 *.tsbuildinfo
+
+# Env files (keep example)
+.env
+.env.*
+!.env.example
+
+# Package manager
+.pnpm-debug.log*
+.yarn-integrity
+.pnp
+.pnp.*
+*.tgz
+
+# Cypress/Playwright
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+test-results/
+
+# SASS/CSS tooling
+.sass-cache/
+
+# IDEs and editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Binary addons
+build/Release/
+
+# Parcel, Microbundle, etc.
+# (covered under cache sections above)
+
+# Local history / swap
+.history/
+*.swp
