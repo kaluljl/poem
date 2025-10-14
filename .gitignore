@@ -66,9 +66,8 @@ test-results/
 
 # IDEs and editors
 .idea/
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
+.vscode/
+.codebuddy/
 
 # OS files
 .DS_Store
