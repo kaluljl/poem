@@ -1,0 +1,575 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <!-- 页面头部 -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+              <span class="text-3xl mr-3">✨</span>
+              AI创作工坊
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">让AI成为您的诗词创作伙伴</p>
+          </div>
+          <button 
+            @click="$emit('navigate', 'home')"
+            class="btn btn-outline"
+          >
+            返回首页
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 左侧：创作面板 -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- 创作模式选择 -->
+          <div class="card p-6">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+              <span class="text-2xl mr-2">🎨</span>
+              创作模式
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button 
+                v-for="mode in creationModes" 
+                :key="mode.id"
+                @click="selectedMode = mode.id"
+                :class="[
+                  'p-4 rounded-lg border-2 transition-all text-left group',
+                  selectedMode === mode.id 
+                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' 
+                    : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500'
+                ]"
+              >
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">{{ mode.icon }}</div>
+                <div class="font-medium text-sm">{{ mode.name }}</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ mode.desc }}</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 创作参数设置 -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold mb-4">创作参数</h3>
+            
+            <div class="space-y-6">
+              <!-- 主题输入 -->
+              <div>
+                <label class="block text-sm font-medium mb-2">创作主题</label>
+                <input 
+                  v-model="creationForm.theme"
+                  type="text" 
+                  placeholder="例如：春日踏青、思君不见、山水田园..."
+                  class="input"
+                />
+                <p class="text-xs text-gray-500 mt-1">描述您想要表达的主题或场景</p>
+              </div>
+
+              <!-- 情感基调 -->
+              <div>
+                <label class="block text-sm font-medium mb-2">情感基调</label>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    v-for="emotion in emotions" 
+                    :key="emotion"
+                    @click="toggleEmotion(emotion)"
+                    :class="[
+                      'px-3 py-1.5 rounded-full text-sm border transition-colors',
+                      creationForm.emotions.includes(emotion)
+                        ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-300'
+                        : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600'
+                    ]"
+                  >
+                    {{ emotion }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- 诗词体裁 -->
+              <div>
+                <label class="block text-sm font-medium mb-2">诗词体裁</label>
+                <select 
+                  v-model="creationForm.style"
+                  class="input"
+                >
+                  <option value="">请选择体裁</option>
+                  <option value="五言绝句">五言绝句</option>
+                  <option value="七言绝句">七言绝句</option>
+                  <option value="五言律诗">五言律诗</option>
+                  <option value="七言律诗">七言律诗</option>
+                  <option value="词">词</option>
+                  <option value="古风">古风</option>
+                </select>
+              </div>
+
+              <!-- 关键意象 -->
+              <div>
+                <label class="block text-sm font-medium mb-2">关键意象（可选）</label>
+                <input 
+                  v-model="creationForm.keywords"
+                  type="text" 
+                  placeholder="例如：明月、青山、流水、梧桐..."
+                  class="input"
+                />
+                <p class="text-xs text-gray-500 mt-1">用逗号分隔多个关键词</p>
+              </div>
+
+              <!-- 创作按钮 -->
+              <div class="flex gap-3 pt-4">
+                <button 
+                  @click="generatePoetry"
+                  :disabled="isGenerating || !canGenerate"
+                  class="flex-1 btn btn-primary"
+                  :class="{ 'opacity-50 cursor-not-allowed': isGenerating || !canGenerate }"
+                >
+                  <span v-if="isGenerating" class="flex items-center justify-center">
+                    <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    AI创作中...
+                  </span>
+                  <span v-else class="flex items-center justify-center">
+                    <span class="text-lg mr-2">✨</span>
+                    开始创作
+                  </span>
+                </button>
+                <button 
+                  @click="clearForm"
+                  class="btn btn-outline"
+                >
+                  清空
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 创作结果 -->
+          <div v-if="generatedPoems.length > 0" class="card p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <span class="text-lg mr-2">📝</span>
+              创作结果
+            </h3>
+            <div class="space-y-4">
+              <div 
+                v-for="(poem, index) in generatedPoems" 
+                :key="index"
+                class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow"
+              >
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-medium text-purple-700 dark:text-purple-400">{{ poem.title }}</h4>
+                  <div class="flex gap-2">
+                    <button @click="editPoem(poem, index)" class="text-blue-600 hover:text-blue-700 text-sm">编辑</button>
+                    <button @click="savePoem(poem)" class="text-green-600 hover:text-green-700 text-sm">保存</button>
+                    <button @click="copyText(poem.content)" class="text-gray-600 hover:text-gray-700 text-sm">复制</button>
+                  </div>
+                </div>
+                <div class="text-gray-800 dark:text-gray-200 leading-relaxed serif whitespace-pre-line mb-3">{{ poem.content }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
+                  体裁：{{ poem.style }} | 主题：{{ poem.theme }}
+                </div>
+                <div v-if="poem.analysis" class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                  <div class="text-sm text-amber-800 dark:text-amber-300">
+                    <strong>AI赏析：</strong>{{ poem.analysis }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧：工具面板 -->
+        <div class="space-y-6">
+          <!-- AI助手 -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <span class="text-lg mr-2">🤖</span>
+              AI助手
+            </h3>
+            <div class="space-y-3">
+              <button 
+                @click="getInspiration" 
+                :disabled="isLoading"
+                class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              >
+                <div class="font-medium text-sm">💡 获取灵感</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">随机推荐创作主题</div>
+              </button>
+              <button 
+                @click="checkRhyme" 
+                :disabled="isLoading || generatedPoems.length === 0"
+                class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+              >
+                <div class="font-medium text-sm">🎵 韵律检查</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">检查平仄和押韵</div>
+              </button>
+              <button 
+                @click="findRhymes" 
+                :disabled="isLoading"
+                class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              >
+                <div class="font-medium text-sm">📖 押韵词典</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">查找押韵字词</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 创作历史 -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <span class="text-lg mr-2">📚</span>
+              创作历史
+            </h3>
+            <div v-if="recentCreations.length === 0" class="text-center text-gray-500 py-4">
+              暂无创作历史
+            </div>
+            <div v-else class="space-y-3">
+              <div 
+                v-for="creation in recentCreations.slice(0, 5)" 
+                :key="creation.id"
+                class="p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                @click="loadCreation(creation)"
+              >
+                <div class="font-medium text-sm truncate">{{ creation.title }}</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ creation.created_at }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 创作技巧 -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <span class="text-lg mr-2">💎</span>
+              创作技巧
+            </h3>
+            <div class="space-y-3 text-sm">
+              <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <div class="font-medium text-purple-800 dark:text-purple-300 mb-1">意象选择</div>
+                <div class="text-purple-700 dark:text-purple-400">选择具有象征意义的意象，如"明月"代表思念，"梧桐"代表离愁。</div>
+              </div>
+              <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div class="font-medium text-blue-800 dark:text-blue-300 mb-1">情景交融</div>
+                <div class="text-blue-700 dark:text-blue-400">将个人情感融入自然景物的描写中，达到情景交融的效果。</div>
+              </div>
+              <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="font-medium text-green-800 dark:text-green-300 mb-1">对仗工整</div>
+                <div class="text-green-700 dark:text-green-400">律诗要求颔联和颈联对仗，注意词性、结构的对应。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <transition name="fade">
+      <div v-if="editingPoem" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-black/40" @click="editingPoem = null"></div>
+        <div class="relative z-10 bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-6">
+          <h3 class="text-xl font-semibold mb-4">编辑作品</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">标题</label>
+              <input 
+                v-model="editingPoem.title"
+                type="text" 
+                class="input"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">内容</label>
+              <textarea 
+                v-model="editingPoem.content"
+                rows="8"
+                class="input serif"
+              ></textarea>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+            <button 
+              @click="editingPoem = null"
+              class="btn btn-outline"
+            >
+              取消
+            </button>
+            <button 
+              @click="updatePoem"
+              class="btn btn-primary"
+            >
+              保存修改
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { isAuthenticated, requireAuth } from '@/lib/auth'
+import { aiService, type CreationRequest, type PoemResult } from '@/lib/aiService'
+import { DatabaseService } from '@/lib/database'
+
+// Emits
+defineEmits<{
+  navigate: [page: string]
+}>()
+
+// 响应式数据
+const selectedMode = ref('ai-assist')
+const isGenerating = ref(false)
+const isLoading = ref(false)
+const editingPoem = ref<(PoemResult & { index: number }) | null>(null)
+
+// 创作模式
+const creationModes = [
+  { id: 'ai-assist', name: 'AI辅助', desc: '智能创作建议', icon: '🤖' },
+  { id: 'template', name: '模板填词', desc: '经典格律模板', icon: '📋' },
+  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' },
+  { id: 'collaborative', name: '接龙创作', desc: '多人协作完成', icon: '🤝' }
+]
+
+// 情感基调选项
+const emotions = ['喜悦', '忧伤', '思念', '豪迈', '宁静', '激昂', '惆怅', '欣慰']
+
+// 创作表单
+const creationForm = ref({
+  theme: '',
+  emotions: [] as string[],
+  style: '',
+  keywords: ''
+})
+
+// 生成的诗词
+const generatedPoems = ref<PoemResult[]>([])
+
+// 创作历史
+const recentCreations = ref<Array<{
+  id: string
+  title: string
+  created_at: string
+}>>([])
+
+// 计算属性
+const canGenerate = computed(() => {
+  return creationForm.value.theme.trim() && creationForm.value.style
+})
+
+// 方法
+function toggleEmotion(emotion: string) {
+  const emotions = creationForm.value.emotions
+  const index = emotions.indexOf(emotion)
+  if (index > -1) {
+    emotions.splice(index, 1)
+  } else {
+    emotions.push(emotion)
+  }
+}
+
+function clearForm() {
+  creationForm.value = {
+    theme: '',
+    emotions: [],
+    style: '',
+    keywords: ''
+  }
+}
+
+async function generatePoetry() {
+  if (!canGenerate.value) return
+  
+  // 检查登录状态
+  if (!requireAuth()) {
+    alert('请先登录后再进行创作')
+    return
+  }
+  
+  isGenerating.value = true
+  
+  try {
+    const request: CreationRequest = {
+      theme: creationForm.value.theme,
+      emotions: creationForm.value.emotions,
+      style: creationForm.value.style,
+      keywords: creationForm.value.keywords,
+      mode: selectedMode.value
+    }
+    
+    const results = await aiService.generatePoetry(request)
+    
+    // 添加到生成结果列表
+    generatedPoems.value.unshift(...results)
+    
+    // 限制显示数量
+    if (generatedPoems.value.length > 10) {
+      generatedPoems.value = generatedPoems.value.slice(0, 10)
+    }
+    
+  } catch (error) {
+    console.error('生成失败:', error)
+    alert('生成失败，请稍后重试')
+  } finally {
+    isGenerating.value = false
+  }
+}
+
+function editPoem(poem: PoemResult, index: number) {
+  editingPoem.value = { ...poem, index }
+}
+
+function updatePoem() {
+  if (editingPoem.value) {
+    const index = editingPoem.value.index
+    generatedPoems.value[index] = { ...editingPoem.value }
+    delete generatedPoems.value[index].index
+    editingPoem.value = null
+  }
+}
+
+async function savePoem(poem: PoemResult) {
+  if (!isAuthenticated.value) {
+    alert('请先登录')
+    return
+  }
+
+  try {
+    const poemData = {
+      title: poem.title,
+      content: poem.content,
+      style: poem.style,
+      theme: poem.theme,
+      emotions: creationForm.value.emotions,
+      keywords: creationForm.value.keywords ? creationForm.value.keywords.split(',').map(k => k.trim()) : [],
+      is_ai_assisted: true,
+      ai_prompt: `主题: ${creationForm.value.theme}, 体裁: ${poem.style}`,
+      status: 'draft' as const,
+      user_id: '' // 会在数据库服务中自动填充
+    }
+
+    const result = await DatabaseService.createUserPoem(poemData)
+    
+    if (result) {
+      alert('作品已保存到草稿箱！')
+      // 添加到创作历史
+      recentCreations.value.unshift({
+        id: result.id,
+        title: result.title,
+        created_at: new Date().toLocaleDateString()
+      })
+    } else {
+      alert('保存失败，请稍后重试')
+    }
+  } catch (error) {
+    console.error('保存作品失败:', error)
+    alert('保存失败，请稍后重试')
+  }
+}
+
+function loadCreation(creation: { id: string; title: string; created_at: string }) {
+  // 加载历史创作到当前编辑器
+  console.log('加载创作:', creation)
+}
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text)
+    alert('已复制到剪贴板')
+  } catch {
+    alert('复制失败，请手动复制')
+  }
+}
+
+async function getInspiration() {
+  isLoading.value = true
+  try {
+    const inspirations = await aiService.getInspiration()
+    const random = inspirations[Math.floor(Math.random() * inspirations.length)]
+    creationForm.value.theme = random
+    alert(`💡 灵感推荐：${random}`)
+  } catch (error) {
+    console.error('获取灵感失败:', error)
+    alert('获取灵感失败，请稍后重试')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function checkRhyme() {
+  if (!generatedPoems.value.length) {
+    alert('请先生成诗词作品')
+    return
+  }
+  
+  isLoading.value = true
+  try {
+    const latestPoem = generatedPoems.value[0]
+    const result = await aiService.checkRhyme(latestPoem.content)
+    
+    let message = `韵律检查结果：${result.isValid ? '✅ 符合要求' : '❌ 需要调整'}\n\n`
+    message += `分析：${result.analysis}\n\n`
+    if (result.suggestions.length > 0) {
+      message += '建议：\n' + result.suggestions.map(s => `• ${s}`).join('\n')
+    }
+    
+    alert(message)
+  } catch (error) {
+    console.error('韵律检查失败:', error)
+    alert('韵律检查失败，请稍后重试')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function findRhymes() {
+  const word = prompt('请输入要查找押韵的字：')
+  if (!word?.trim()) return
+  
+  isLoading.value = true
+  try {
+    const result = await aiService.findRhymes(word.trim())
+    const message = `"${result.word}" 的押韵字：\n${result.rhymes.join('、')}\n\n声调：${result.tone}`
+    alert(message)
+  } catch (error) {
+    console.error('查找押韵失败:', error)
+    alert('查找押韵失败，请稍后重试')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// 生命周期
+onMounted(async () => {
+  // 加载用户的创作历史
+  if (isAuthenticated.value) {
+    try {
+      const { data } = await DatabaseService.getUserPoems({
+        limit: 10,
+        status: 'draft'
+      })
+      recentCreations.value = data.map(poem => ({
+        id: poem.id,
+        title: poem.title,
+        created_at: new Date(poem.created_at).toLocaleDateString()
+      }))
+    } catch (error) {
+      console.error('加载创作历史失败:', error)
+    }
+  }
+})
+</script>
+
+<style scoped>
+.serif { 
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", "KaiTi", "Kaiti SC", serif; 
+  line-height: 1.85; 
+  letter-spacing: 0.01em; 
+}
+
+.fade-enter-active, .fade-leave-active { 
+  transition: opacity 0.25s ease; 
+}
+
+.fade-enter-from, .fade-leave-to { 
+  opacity: 0; 
+}
+</style>

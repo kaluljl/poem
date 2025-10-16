@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import SearchView from '@/views/SearchView.vue'
+import HomePage from '@/views/HomePage.vue'
 
 const routes = [
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/search', name: 'search', component: SearchView }
+  { path: '/', name: 'home', component: HomePage },
+  // 其他路由可以根据需要添加
 ]
 
 const router = createRouter({
