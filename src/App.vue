@@ -89,7 +89,7 @@ import ProfilePage from '@/views/ProfilePage.vue'
 import PoemDetailPage from '@/views/PoemDetailPage.vue'
 import AuthModal from '@/components/AuthModal.vue'
 import NotificationToast from '@/components/NotificationToast.vue'
-import { initAuth } from '@/lib/auth'
+import { initAuth, signOut } from '@/lib/auth'
 
 // 应用状态
 const currentPage = ref('home')
@@ -153,7 +153,12 @@ function checkUserSession() {
 }
 
 // 登出功能
-function logout() {
+async function logout() {
+  try {
+    await signOut()
+  } catch (e) {
+    // 忽略 signOut 异常，继续清理本地
+  }
   localStorage.removeItem('poetry_user')
   localStorage.removeItem('poetry_session')
   currentUser.value = null
