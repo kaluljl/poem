@@ -50,8 +50,8 @@
                   color: activeTab === 'email' ? 'white' : '#6b7280',
                   boxShadow: activeTab === 'email' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
                 }"
-                @mouseover="activeTab !== 'email' && ($event.target.style.color = '#3b82f6'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)')"
-                @mouseout="activeTab !== 'email' && ($event.target.style.color = '#6b7280'; $event.target.style.background = 'transparent')"
+                @mouseover="handleEmailTabHover"
+                @mouseout="handleEmailTabOut"
               >邮箱登录</button>
               <button
                 @click="activeTab = 'course'"
@@ -67,8 +67,8 @@
                   color: activeTab === 'course' ? 'white' : '#6b7280',
                   boxShadow: activeTab === 'course' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
                 }"
-                @mouseover="activeTab !== 'course' && ($event.target.style.color = '#3b82f6'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)')"
-                @mouseout="activeTab !== 'course' && ($event.target.style.color = '#6b7280'; $event.target.style.background = 'transparent')"
+                @mouseover="handleCourseTabHover"
+                @mouseout="handleCourseTabOut"
               >校园账号</button>
             </div>
           </div>
@@ -124,10 +124,21 @@
                   </span>
                 </button>
                 <button v-else @click="registerWithEmail" :disabled="loading"
-                        style="width: 100%; height: 48px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
-                        @mouseover="!loading && ($event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)')"
-                        @mouseout="!loading && ($event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)')"
-                        :style="loading ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                        :style="{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '12px',
+                          border: 'none',
+                          fontWeight: '600',
+                          cursor: loading ? 'not-allowed' : 'pointer',
+                          transition: 'all 0.3s ease',
+                          background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                          color: 'white',
+                          boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
+                          opacity: loading ? '0.5' : '1'
+                        }"
+                        @mouseover="handleRegisterHover"
+                        @mouseout="handleRegisterOut">
                   <span v-if="!loading">注册</span>
                   <span v-else class="flex items-center justify-center gap-2">
                     <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -169,10 +180,21 @@
                   </div>
                 </div>
                 <button @click="loginWithCourse" :disabled="loading"
-                        style="width: 100%; height: 48px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
-                        @mouseover="!loading && ($event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)')"
-                        @mouseout="!loading && ($event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)')"
-                        :style="loading ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                        :style="{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '12px',
+                          border: 'none',
+                          fontWeight: '600',
+                          cursor: loading ? 'not-allowed' : 'pointer',
+                          transition: 'all 0.3s ease',
+                          background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                          color: 'white',
+                          boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
+                          opacity: loading ? '0.5' : '1'
+                        }"
+                        @mouseover="handleLoginHover"
+                        @mouseout="handleLoginOut">
                   <span v-if="!loading">登录</span>
                   <span v-else class="flex items-center justify-center gap-2">
                     <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -229,6 +251,71 @@ const showPassword = ref(false)
 const remember = ref(true)
 const error = ref('')
 const isRegister = ref(true)
+
+// 事件处理函数
+function handleRegisterHover(event: Event) {
+  if (!loading.value) {
+    const target = event.target as HTMLElement
+    target.style.transform = 'translateY(-2px)'
+    target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)'
+  }
+}
+
+function handleRegisterOut(event: Event) {
+  if (!loading.value) {
+    const target = event.target as HTMLElement
+    target.style.transform = 'translateY(0)'
+    target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'
+  }
+}
+
+function handleLoginHover(event: Event) {
+  if (!loading.value) {
+    const target = event.target as HTMLElement
+    target.style.transform = 'translateY(-2px)'
+    target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)'
+  }
+}
+
+function handleLoginOut(event: Event) {
+  if (!loading.value) {
+    const target = event.target as HTMLElement
+    target.style.transform = 'translateY(0)'
+    target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'
+  }
+}
+
+function handleEmailTabHover(event: Event) {
+  if (activeTab.value !== 'email') {
+    const target = event.target as HTMLElement
+    target.style.color = '#3b82f6'
+    target.style.background = 'rgba(59, 130, 246, 0.1)'
+  }
+}
+
+function handleEmailTabOut(event: Event) {
+  if (activeTab.value !== 'email') {
+    const target = event.target as HTMLElement
+    target.style.color = '#6b7280'
+    target.style.background = 'transparent'
+  }
+}
+
+function handleCourseTabHover(event: Event) {
+  if (activeTab.value !== 'course') {
+    const target = event.target as HTMLElement
+    target.style.color = '#3b82f6'
+    target.style.background = 'rgba(59, 130, 246, 0.1)'
+  }
+}
+
+function handleCourseTabOut(event: Event) {
+  if (activeTab.value !== 'course') {
+    const target = event.target as HTMLElement
+    target.style.color = '#6b7280'
+    target.style.background = 'transparent'
+  }
+}
 
 const emailForm = ref({ email: '', password: '' })
 const courseForm = ref({ username: '', password: '' })
