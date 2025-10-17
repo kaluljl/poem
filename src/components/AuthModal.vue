@@ -35,14 +35,40 @@
             </div>
 
             <!-- 标签栏 -->
-            <div class="flex items-center justify-center border-b border-gray-200">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; background: rgba(59, 130, 246, 0.05); border-radius: 12px; margin-bottom: 16px;">
               <button
                 @click="activeTab = 'email'"
-                :class="['px-4 pb-3 text-sm font-medium transition-colors', activeTab==='email' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700']"
+                :style="{
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  background: activeTab === 'email' ? 'linear-gradient(to right, #3b82f6, #8b5cf6)' : 'transparent',
+                  color: activeTab === 'email' ? 'white' : '#6b7280',
+                  boxShadow: activeTab === 'email' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
+                }"
+                @mouseover="activeTab !== 'email' && ($event.target.style.color = '#3b82f6'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)')"
+                @mouseout="activeTab !== 'email' && ($event.target.style.color = '#6b7280'; $event.target.style.background = 'transparent')"
               >邮箱登录</button>
               <button
                 @click="activeTab = 'course'"
-                :class="['px-4 pb-3 text-sm font-medium transition-colors', activeTab==='course' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700']"
+                :style="{
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  background: activeTab === 'course' ? 'linear-gradient(to right, #3b82f6, #8b5cf6)' : 'transparent',
+                  color: activeTab === 'course' ? 'white' : '#6b7280',
+                  boxShadow: activeTab === 'course' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
+                }"
+                @mouseover="activeTab !== 'course' && ($event.target.style.color = '#3b82f6'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)')"
+                @mouseout="activeTab !== 'course' && ($event.target.style.color = '#6b7280'; $event.target.style.background = 'transparent')"
               >校园账号</button>
             </div>
           </div>
@@ -98,7 +124,10 @@
                   </span>
                 </button>
                 <button v-else @click="registerWithEmail" :disabled="loading"
-                        class="w-full h-12 rounded-lg text-white font-semibold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl">
+                        style="width: 100%; height: 48px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+                        @mouseover="!loading && ($event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)')"
+                        @mouseout="!loading && ($event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)')"
+                        :style="loading ? 'opacity: 0.5; cursor: not-allowed;' : ''">
                   <span v-if="!loading">注册</span>
                   <span v-else class="flex items-center justify-center gap-2">
                     <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -140,7 +169,10 @@
                   </div>
                 </div>
                 <button @click="loginWithCourse" :disabled="loading"
-                        class="w-full h-12 rounded-lg text-white font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl">
+                        style="width: 100%; height: 48px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+                        @mouseover="!loading && ($event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)')"
+                        @mouseout="!loading && ($event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)')"
+                        :style="loading ? 'opacity: 0.5; cursor: not-allowed;' : ''">
                   <span v-if="!loading">登录</span>
                   <span v-else class="flex items-center justify-center gap-2">
                     <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -153,9 +185,9 @@
             <!-- 切换登录/注册 -->
             <div style="text-align: center; padding-top: 24px; border-top: 1px solid #e5e7eb;">
               <button @click="isRegister = !isRegister" 
-                      style="color: #3b82f6; background: none; border: none; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.3s ease; padding: 8px 16px; border-radius: 8px;"
-                      @mouseover="$event.target.style.color = '#1d4ed8'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)'"
-                      @mouseout="$event.target.style.color = '#3b82f6'; $event.target.style.background = 'none'">
+                      style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); font-weight: 500; cursor: pointer; font-size: 14px; transition: all 0.3s ease; padding: 10px 20px; border-radius: 10px;"
+                      @mouseover="$event.target.style.color = '#1d4ed8'; $event.target.style.background = 'rgba(59, 130, 246, 0.2)'; $event.target.style.borderColor = 'rgba(59, 130, 246, 0.4)'; $event.target.style.transform = 'translateY(-1px)'"
+                      @mouseout="$event.target.style.color = '#3b82f6'; $event.target.style.background = 'rgba(59, 130, 246, 0.1)'; $event.target.style.borderColor = 'rgba(59, 130, 246, 0.2)'; $event.target.style.transform = 'translateY(0)'">
                 {{ isRegister ? '已有账号？去登录' : '没有账号？立即注册' }}
               </button>
             </div>
@@ -163,9 +195,9 @@
             <!-- 取消按钮 -->
             <div style="text-align: center; padding-top: 16px;">
               <button @click="$emit('close')" 
-                      style="color: #6b7280; background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(156, 163, 175, 0.1) 100%); border: 2px solid rgba(107, 114, 128, 0.2); font-weight: 500; cursor: pointer; font-size: 14px; transition: all 0.3s ease; padding: 10px 24px; border-radius: 10px; backdrop-filter: blur(10px);"
-                      @mouseover="$event.target.style.color = '#374151'; $event.target.style.background = 'linear-gradient(135deg, rgba(107, 114, 128, 0.2) 0%, rgba(156, 163, 175, 0.2) 100%)'; $event.target.style.borderColor = 'rgba(107, 114, 128, 0.4)'; $event.target.style.transform = 'translateY(-1px)'"
-                      @mouseout="$event.target.style.color = '#6b7280'; $event.target.style.background = 'linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(156, 163, 175, 0.1) 100%)'; $event.target.style.borderColor = 'rgba(107, 114, 128, 0.2)'; $event.target.style.transform = 'translateY(0)'">
+                      style="color: #6b7280; background: rgba(107, 114, 128, 0.1); border: 1px solid rgba(107, 114, 128, 0.2); font-weight: 500; cursor: pointer; font-size: 14px; transition: all 0.3s ease; padding: 10px 20px; border-radius: 10px;"
+                      @mouseover="$event.target.style.color = '#374151'; $event.target.style.background = 'rgba(107, 114, 128, 0.2)'; $event.target.style.borderColor = 'rgba(107, 114, 128, 0.4)'; $event.target.style.transform = 'translateY(-1px)'"
+                      @mouseout="$event.target.style.color = '#6b7280'; $event.target.style.background = 'rgba(107, 114, 128, 0.1)'; $event.target.style.borderColor = 'rgba(107, 114, 128, 0.2)'; $event.target.style.transform = 'translateY(0)'">
                 取消登录
               </button>
             </div>
