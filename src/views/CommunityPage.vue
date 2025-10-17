@@ -41,7 +41,7 @@
     <div style="max-width: 1200px; margin: 0 auto; padding: 32px 16px;">
       <div :style="{ 
         display: 'grid', 
-        gridTemplateColumns: window.innerWidth >= 1024 ? '3fr 1fr' : '1fr', 
+        gridTemplateColumns: isDesktop ? '3fr 1fr' : '1fr', 
         gap: '24px' 
       }">
         <!-- 主内容区 -->
@@ -304,7 +304,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { isAuthenticated, currentUser } from '@/lib/auth'
 import { DatabaseService } from '@/lib/database'
 import type { UserPoem, UserProfile } from '@/lib/database'
@@ -317,6 +317,17 @@ defineEmits<{
 
 // 响应式数据
 const loading = ref(true)
+const isDesktop = ref(false)
+
+// 检查屏幕尺寸
+function checkScreenSize() {
+  isDesktop.value = window.innerWidth >= 1024
+}
+
+// 监听窗口大小变化
+function handleResize() {
+  checkScreenSize()
+}
 const posts = ref<(UserPoem & { 
   author: UserProfile
   isLiked?: boolean
@@ -550,7 +561,17 @@ async function loadInitialData() {
 // 生命周期
 onMounted(() => {
   console.log('🏘️ 社区页面已挂载')
+  
+  // 初始化屏幕尺寸检测
+  checkScreenSize()
+  window.addEventListener('resize', handleResize)
+  
   loadInitialData()
+})
+
+// 清理事件监听器
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
