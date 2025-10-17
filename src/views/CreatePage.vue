@@ -384,8 +384,7 @@ const editingPoem = ref<(PoemResult & { index: number }) | null>(null)
 const creationModes = [
   { id: 'ai-assist', name: 'AI辅助', desc: '智能创作建议', icon: '🤖' },
   { id: 'template', name: '模板填词', desc: '经典格律模板', icon: '📋' },
-  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' },
-  { id: 'collaborative', name: '接龙创作', desc: '多人协作完成', icon: '🤝' }
+  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' }
 ]
 
 // 情感基调选项
