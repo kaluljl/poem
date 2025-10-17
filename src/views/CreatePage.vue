@@ -86,12 +86,20 @@
             </div>
           </div>
 
-          <!-- 创作模式选择 + AI接龙入口一致化 -->
+          <!-- 创作模式选择（AI接龙改为独立按钮） -->
           <div class="card p-6">
-            <h2 class="text-xl font-semibold mb-4 flex items-center">
-              <span class="text-2xl mr-2">🎨</span>
-              创作模式
-            </h2>
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-semibold flex items-center">
+                <span class="text-2xl mr-2">🎨</span>
+                创作模式
+              </h2>
+              <button
+                @click="showRelay = true"
+                style="padding: 10px 16px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+                @mouseover="$event.target.style.transform='translateY(-2px)'; $event.target.style.boxShadow='0 6px 20px rgba(59,130,246,.4)';"
+                @mouseout="$event.target.style.transform='translateY(0)'; $event.target.style.boxShadow='0 4px 15px rgba(59,130,246,.3)';"
+              >🤝 AI接龙</button>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
               <button 
                 v-for="mode in creationModes" 
@@ -108,29 +116,7 @@
                 <div class="font-medium text-sm">{{ mode.name }}</div>
                 <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ mode.desc }}</div>
               </button>
-              <!-- 统一样式的 AI接龙入口按钮 -->
-              <button
-                @click="showRelay = true"
-                :class="[
-                  'relative p-4 rounded-lg border-2 transition-all text-left group',
-                  showRelay ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-transparent'
-                ]"
-                style="background: linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#3b82f6,#8b5cf6) border-box; border: 2px solid transparent; box-shadow: 0 6px 28px rgba(59,130,246,.18); cursor: pointer;"
-                @mouseover="$event.currentTarget.style.transform='translateY(-2px)'; $event.currentTarget.style.boxShadow='0 10px 32px rgba(59,130,246,.28)';"
-                @mouseout="$event.currentTarget.style.transform='translateY(0)'; $event.currentTarget.style.boxShadow='0 6px 28px rgba(59,130,246,.18)';"
-                aria-label="AI接龙 (可点击)"
-              >
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="text-2xl group-hover:scale-110 transition-transform">🤝</div>
-                  <span class="text-xs px-2 py-0.5 rounded-full" style="background: rgba(59,130,246,.1); color:#2563eb; border:1px solid rgba(59,130,246,.25);">可点击</span>
-                </div>
-                <div class="font-medium text-sm" style="color:#111827">AI接龙</div>
-                <div class="text-xs mt-1" style="color:#374151">与AI轮流续写 <span class="animate-pulse" style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; margin-left:6px;"></span></div>
-                <div class="mt-2 text-xs font-medium" style="color:#2563eb; display:flex; align-items:center; gap:4px;">
-                  <span>点击开始</span>
-                  <span>➜</span>
-                </div>
-              </button>
+              
             </div>
           </div>
 
