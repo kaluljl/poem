@@ -167,6 +167,7 @@
                   <option value="词">词</option>
                   <option value="古风">古风</option>
                 </select>
+                <p v-if="!creationForm.style" class="text-xs mt-1" style="color:#ef4444;">生成需要先选择体裁</p>
               </div>
 
               <!-- 关键意象 -->
@@ -183,6 +184,7 @@
 
               <!-- 创作按钮 -->
               <div class="flex gap-3 pt-4">
+                <div v-if="!canGenerate" class="flex-1" style="background: rgba(245, 158, 11, 0.08); border:1px solid rgba(245, 158, 11, 0.25); color:#92400e; padding:10px 12px; border-radius: 10px; font-size:12px;">请先填写“创作主题”并选择“诗词体裁”，再开始生成。</div>
                 <button 
                   @click="() => { console.log('🖱️ 按钮被点击了!'); generatePoetry(); }"
                   :disabled="isGenerating || !canGenerate"
