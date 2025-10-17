@@ -98,6 +98,42 @@ export class AIPoetryService {
     }
   }
 
+  // AI接龙：根据已有内容续写下一句/下一联
+  async generateNextLine(context: {
+    previous: string
+    style: string
+    constraint?: 'one-line' | 'couplet' | 'quatrain'
+    rhymeHint?: string
+  }): Promise<string> {
+    const prompt = `请根据以下已写内容，继续进行${context.style}的接龙创作，保持意境与格律一致：\n\n已写内容：\n${context.previous}\n\n要求：\n1. 严格符合${context.style}格律\n2. 语言古雅，意境连贯\n3. 仅返回续写部分${context.constraint === 'couplet' ? '（两句对仗）' : context.constraint === 'quatrain' ? '（四句）' : '（一句）'}\n${context.rhymeHint ? `4. 押韵提示：尽量押${context.rhymeHint}韵\n` : ''}不要附加解释或标注。`
+
+    try {
+      const response = await fetch(this.DEEPSEEK_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.DEEPSEEK_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: '你是严格遵循格律的古典诗词接龙助手。' },
+            { role: 'user', content: prompt }
+          ],
+          max_tokens: 300,
+          temperature: 0.7
+        })
+      })
+      if (!response.ok) throw new Error(`${response.status}`)
+      const data = await response.json()
+      return (data.choices?.[0]?.message?.content || '').trim()
+    } catch (e) {
+      console.warn('generateNextLine fallback:', e)
+      // 退路：返回一行与语气相符的占位句
+      return '清风入句来'
+    }
+  }
+
   // 构建诗词创作提示词
   private buildPoetryPrompt(request: CreationRequest): string {
     const { theme, emotions, style, keywords } = request

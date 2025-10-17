@@ -384,7 +384,8 @@ const editingPoem = ref<(PoemResult & { index: number }) | null>(null)
 const creationModes = [
   { id: 'ai-assist', name: 'AI辅助', desc: '智能创作建议', icon: '🤖' },
   { id: 'template', name: '模板填词', desc: '经典格律模板', icon: '📋' },
-  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' }
+  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' },
+  { id: 'ai-collab', name: 'AI接龙', desc: '与AI轮流续写', icon: '🤝' }
 ]
 
 // 情感基调选项
@@ -400,6 +401,8 @@ const creationForm = ref({
 
 // 生成的诗词
 const generatedPoems = ref<PoemResult[]>([])
+const relayContext = ref<string>('')
+const relayLines = ref<string[]>([])
 
 // 创作历史
 const recentCreations = ref<Array<{
@@ -440,6 +443,23 @@ function clearForm() {
     emotions: [],
     style: '',
     keywords: ''
+  }
+}
+
+// AI接龙：基于已有上下文续写一行
+async function relayNext() {
+  if (!creationForm.value.style) return
+  isGenerating.value = true
+  try {
+    const next = await aiService.generateNextLine({
+      previous: relayContext.value || creationForm.value.theme,
+      style: creationForm.value.style,
+      constraint: 'one-line'
+    })
+    relayLines.value.push(next)
+    relayContext.value = (relayContext.value ? relayContext.value + '\n' : '') + next
+  } finally {
+    isGenerating.value = false
   }
 }
 
