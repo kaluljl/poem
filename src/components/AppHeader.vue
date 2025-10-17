@@ -16,8 +16,8 @@
             <span class="hidden sm:block">诗境雅集</span>
           </button>
           
-          <!-- 桌面端导航 -->
-          <nav class="hidden md:flex items-center space-x-1">
+          <!-- 导航菜单 -->
+          <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <NavButton 
               :active="currentPage === 'home'"
               @click="$emit('navigate', 'home')"
