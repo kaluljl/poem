@@ -124,7 +124,9 @@ const chatOpen = ref(false)
 
 // 导航函数
 function navigateTo(page: string, options?: { poemId?: string; poemType?: 'classic' | 'user' }) {
+  console.log('🧭 导航到页面:', page, '选项:', options)
   currentPage.value = page
+  console.log('📄 当前页面设置为:', currentPage.value)
   
   if (options?.poemId) {
     selectedPoemId.value = options.poemId

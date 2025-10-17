@@ -1,5 +1,9 @@
 <template>
   <div style="min-height: 100vh; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fde68a 100%);">
+    <!-- 调试信息 -->
+    <div v-if="true" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 8px; border-radius: 4px; font-size: 12px; z-index: 9999;">
+      社区页面已加载
+    </div>
     <!-- 页面头部 -->
     <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(229, 231, 235, 0.3);">
       <div style="max-width: 1200px; margin: 0 auto; padding: 24px 16px;">
@@ -545,6 +549,7 @@ async function loadInitialData() {
 
 // 生命周期
 onMounted(() => {
+  console.log('🏘️ 社区页面已挂载')
   loadInitialData()
 })
 </script>
