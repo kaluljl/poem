@@ -34,10 +34,9 @@
               <p style="color: #6b7280; font-size: 14px;">{{ isRegister ? '创建账号，开启诗词创作之旅' : '欢迎回来，继续您的诗词之旅' }}</p>
             </div>
 
-            <!-- 标签栏 -->
+            <!-- 标签栏（仅邮箱登录） -->
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; background: rgba(59, 130, 246, 0.05); border-radius: 12px; margin-bottom: 16px;">
               <button
-                @click="activeTab = 'email'"
                 :style="{
                   padding: '8px 16px',
                   borderRadius: '8px',
@@ -46,37 +45,18 @@
                   border: 'none',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
-                  background: activeTab === 'email' ? 'linear-gradient(to right, #3b82f6, #8b5cf6)' : 'transparent',
-                  color: activeTab === 'email' ? 'white' : '#6b7280',
-                  boxShadow: activeTab === 'email' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
+                  background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                  color: 'white',
+                  boxShadow: '0 2px 8px rgba(59, 130, 246, 0.3)'
                 }"
-                @mouseover="handleEmailTabHover"
-                @mouseout="handleEmailTabOut"
               >邮箱登录</button>
-              <button
-                @click="activeTab = 'course'"
-                :style="{
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  background: activeTab === 'course' ? 'linear-gradient(to right, #3b82f6, #8b5cf6)' : 'transparent',
-                  color: activeTab === 'course' ? 'white' : '#6b7280',
-                  boxShadow: activeTab === 'course' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : 'none'
-                }"
-                @mouseover="handleCourseTabHover"
-                @mouseout="handleCourseTabOut"
-              >校园账号</button>
             </div>
           </div>
 
           <!-- 内容 -->
           <div class="px-6 pb-6">
             <!-- 邮箱登录/注册 -->
-            <div v-if="activeTab==='email'" class="space-y-4">
+            <div class="space-y-4">
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">邮箱地址</label>
@@ -148,61 +128,7 @@
               </div>
             </div>
 
-            <!-- 校园账号 -->
-            <div v-else class="space-y-4">
-              <div class="space-y-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">校园用户名</label>
-                  <input v-model="courseForm.username" type="text"
-                    style="width: 100%; height: 48px; padding: 0 16px; border-radius: 12px; border: 2px solid #e5e7eb; background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%); color: #1f2937; placeholder-color: #9ca3af; outline: none; transition: all 0.3s ease; backdrop-filter: blur(10px);"
-                    @focus="$event.target.style.borderColor = '#3b82f6'; $event.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; $event.target.style.background = 'rgba(255, 255, 255, 0.95)'"
-                    @blur="$event.target.style.borderColor = '#e5e7eb'; $event.target.style.boxShadow = 'none'; $event.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%)'"
-                    placeholder="请输入校园用户名">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>
-                  <div class="relative">
-                    <input v-model="courseForm.password" :type="showPassword ? 'text' : 'password'"
-                      style="width: 100%; height: 48px; padding: 0 16px; border-radius: 12px; border: 2px solid #e5e7eb; background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%); color: #1f2937; placeholder-color: #9ca3af; outline: none; transition: all 0.3s ease; backdrop-filter: blur(10px);"
-                      @focus="$event.target.style.borderColor = '#3b82f6'; $event.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; $event.target.style.background = 'rgba(255, 255, 255, 0.95)'"
-                      @blur="$event.target.style.borderColor = '#e5e7eb'; $event.target.style.boxShadow = 'none'; $event.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%)'"
-                      placeholder="请输入密码">
-                    <button @click="showPassword = !showPassword" type="button"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                      <svg v-if="!showPassword" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <button @click="loginWithCourse" :disabled="loading"
-                        :style="{
-                          width: '100%',
-                          height: '48px',
-                          borderRadius: '12px',
-                          border: 'none',
-                          fontWeight: '600',
-                          cursor: loading ? 'not-allowed' : 'pointer',
-                          transition: 'all 0.3s ease',
-                          background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                          color: 'white',
-                          boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
-                          opacity: loading ? '0.5' : '1'
-                        }"
-                        @mouseover="handleLoginHover"
-                        @mouseout="handleLoginOut">
-                  <span v-if="!loading">登录</span>
-                  <span v-else class="flex items-center justify-center gap-2">
-                    <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    登录中...
-                  </span>
-                </button>
-              </div>
-            </div>
+            <!-- 校园账号（已移除） -->
 
             <!-- 切换登录/注册 -->
             <div style="text-align: center; padding-top: 24px; border-top: 1px solid #e5e7eb;">
@@ -255,7 +181,7 @@ const emit = defineEmits<{
   (e: 'success', payload: { user: any, session: any }): void
 }>()
 
-const activeTab = ref<'email'|'course'>('email')
+const activeTab = ref<'email'>('email')
 const loading = ref(false)
 const showPassword = ref(false)
 const remember = ref(true)
@@ -337,7 +263,7 @@ function handleCourseTabOut(event: Event) {
 }
 
 const emailForm = ref({ email: '', password: '' })
-const courseForm = ref({ username: '', password: '' })
+// 已移除校园账号表单
 
 
 async function loginWithEmail() {
@@ -370,11 +296,7 @@ async function registerWithEmail() {
   }
 }
 
-async function loginWithCourse() {
-  if (!courseForm.value.username || !courseForm.value.password) { error.value = '请输入校园账号和密码'; return }
-  // 这里没有真实后端，先提示
-  error.value = '校园账号登录暂未开通'
-}
+// 已移除校园账号登录逻辑
 
 function persistAndNotify(user: any, session: any) {
   try {
