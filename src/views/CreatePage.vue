@@ -57,13 +57,17 @@
                 <textarea v-model="relayContext" rows="6" class="input" placeholder="可粘贴你已写的句子；也可留空从主题开始"></textarea>
                 <p class="text-xs text-gray-500 mt-1">AI会在此基础上续写，保持体裁与意境一致</p>
               </div>
-              <div class="flex items-center gap-3">
+              <div class="flex items-start gap-3">
                 <button @click="relayNext" :disabled="!creationForm.style || isGenerating"
                         style="padding: 10px 16px; border-radius: 10px; border:none; color:#fff; background:linear-gradient(to right,#3b82f6,#8b5cf6); font-weight:600; cursor:pointer; box-shadow:0 4px 15px rgba(59,130,246,.3)"
                         :style="{ opacity: (!creationForm.style || isGenerating) ? 0.5 : 1, cursor: (!creationForm.style || isGenerating) ? 'not-allowed' : 'pointer' }">
                   让AI续写一句
                 </button>
-                <span class="text-xs text-gray-500">体裁以“创作参数”的选择为准</span>
+                <div class="space-y-1">
+                  <div class="text-xs text-gray-500">体裁以“创作参数”的选择为准</div>
+                  <div v-if="!creationForm.style" class="text-xs" style="color:#ef4444;">请先选择体裁，再进行接龙</div>
+                  <div v-else-if="!relayContext && !creationForm.theme" class="text-xs" style="color:#92400e; background: rgba(245, 158, 11, 0.08); border:1px solid rgba(245, 158, 11, 0.25); padding:4px 8px; border-radius:8px; display:inline-block;">提示：建议先填写主题或输入第一句，AI会更贴合你的意图</div>
+                </div>
               </div>
               <div v-if="relayLines.length" class="space-y-2">
                 <div class="text-sm text-gray-500">已续写</div>
