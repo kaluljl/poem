@@ -1,12 +1,24 @@
 <template>
   <button
-    :class="[
-      'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-      active 
-        ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' 
-        : 'text-gray-600 hover:text-amber-600 hover:bg-amber-50 dark:text-gray-400 dark:hover:text-amber-400 dark:hover:bg-amber-900/20'
-    ]"
+    :style="{
+      padding: '8px 16px',
+      borderRadius: '12px',
+      fontSize: '14px',
+      fontWeight: '500',
+      border: 'none',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      background: active 
+        ? 'linear-gradient(to right, #3b82f6, #8b5cf6)' 
+        : 'rgba(59, 130, 246, 0.1)',
+      color: active ? 'white' : '#3b82f6',
+      boxShadow: active 
+        ? '0 4px 15px rgba(59, 130, 246, 0.3)' 
+        : 'none'
+    }"
     @click="$emit('click')"
+    @mouseover="!active && ($event.target.style.background = 'rgba(59, 130, 246, 0.2)')"
+    @mouseout="!active && ($event.target.style.background = 'rgba(59, 130, 246, 0.1)')"
   >
     <slot />
   </button>
