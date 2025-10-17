@@ -277,6 +277,23 @@
             </div>
           </div>
 
+          <!-- 社区入口 -->
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 24px;">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; color: #1f2937;">
+              <span style="font-size: 18px; margin-right: 8px;">🌸</span>
+              分享到社区
+            </h3>
+            <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px; line-height: 1.5;">创作完成后，可以将作品分享到社区，与其他诗友交流心得</p>
+            <button 
+              @click="$emit('navigate', 'community')"
+              style="width: 100%; padding: 12px 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+              @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)'"
+              @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'"
+            >
+              🌸 前往社区
+            </button>
+          </div>
+
           <!-- 创作技巧 -->
           <div class="card p-6">
             <h3 class="text-lg font-semibold mb-4 flex items-center">

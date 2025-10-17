@@ -147,6 +147,53 @@
       </div>
     </section>
 
+    <!-- 社区入口 -->
+    <section style="padding: 64px 0; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fde68a 100%);">
+      <div class="container mx-auto px-4">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 24px; padding: 48px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <div style="font-size: 48px; margin-bottom: 16px;">🌸</div>
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #1f2937; margin-bottom: 16px;">加入诗友社区</h2>
+            <p style="color: #6b7280; font-size: 1.25rem; margin-bottom: 32px; line-height: 1.6;">与千万诗词爱好者一起分享创作，交流心得，探索诗词的无限魅力</p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 32px;">
+              <div style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; color: #3b82f6; font-weight: 500;">
+                <span>📝</span>
+                <span>分享作品</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(139, 92, 246, 0.1); border-radius: 12px; color: #8b5cf6; font-weight: 500;">
+                <span>💬</span>
+                <span>交流心得</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; color: #10b981; font-weight: 500;">
+                <span>🎯</span>
+                <span>创作挑战</span>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+              <button 
+                @click="$emit('navigate', 'community')"
+                style="background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; padding: 16px 32px; border-radius: 12px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3); transition: all 0.3s ease;"
+                @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 12px 35px rgba(59, 130, 246, 0.4)'"
+                @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)'"
+              >
+                🌸 立即加入社区
+              </button>
+              <button 
+                @click="$emit('navigate', 'create')"
+                style="background: white; color: #3b82f6; padding: 16px 32px; border-radius: 12px; border: 2px solid #3b82f6; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                @mouseover="$event.target.style.background = '#f8fafc'; $event.target.style.transform = 'translateY(-2px)'"
+                @mouseout="$event.target.style.background = 'white'; $event.target.style.transform = 'translateY(0)'"
+              >
+                ✨ 开始AI创作
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 创作灵感 -->
     <section style="padding: 64px 0; background: white;">
       <div class="container mx-auto px-4">
