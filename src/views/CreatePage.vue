@@ -44,8 +44,8 @@
             </div>
           </div>
 
-          <!-- AI接龙 面板 -->
-          <div v-if="selectedMode==='ai-collab'" class="card p-6">
+          <!-- AI接龙 面板（以独立入口打开，但视觉样式与模式卡片一致） -->
+          <div v-if="showRelay" class="card p-6">
             <h3 class="text-lg font-semibold mb-4 flex items-center">
               <span class="text-lg mr-2">🤝</span>
               与AI接龙创作
@@ -81,11 +81,12 @@
                   合并为成稿
                 </button>
                 <button @click="() => { relayContext=''; relayLines.splice(0); }" class="btn btn-outline">清空接龙</button>
+                <button @click="showRelay=false" class="btn btn-secondary">关闭接龙</button>
               </div>
             </div>
           </div>
 
-          <!-- 创作模式选择 -->
+          <!-- 创作模式选择 + AI接龙入口一致化 -->
           <div class="card p-6">
             <h2 class="text-xl font-semibold mb-4 flex items-center">
               <span class="text-2xl mr-2">🎨</span>
@@ -106,6 +107,18 @@
                 <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">{{ mode.icon }}</div>
                 <div class="font-medium text-sm">{{ mode.name }}</div>
                 <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ mode.desc }}</div>
+              </button>
+              <!-- 统一样式的 AI接龙入口按钮 -->
+              <button
+                @click="showRelay = true"
+                :class="[
+                  'p-4 rounded-lg border-2 transition-all text-left group',
+                  showRelay ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500'
+                ]"
+              >
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🤝</div>
+                <div class="font-medium text-sm">AI接龙</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">与AI轮流续写</div>
               </button>
             </div>
           </div>
@@ -427,8 +440,7 @@ const editingPoem = ref<(PoemResult & { index: number }) | null>(null)
 const creationModes = [
   { id: 'ai-assist', name: 'AI辅助', desc: '智能创作建议', icon: '🤖' },
   { id: 'template', name: '模板填词', desc: '经典格律模板', icon: '📋' },
-  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' },
-  { id: 'ai-collab', name: 'AI接龙', desc: '与AI轮流续写', icon: '🤝' }
+  { id: 'inspiration', name: '灵感激发', desc: '创意思维启发', icon: '💡' }
 ]
 
 // 情感基调选项
@@ -446,6 +458,7 @@ const creationForm = ref({
 const generatedPoems = ref<PoemResult[]>([])
 const relayContext = ref<string>('')
 const relayLines = ref<string[]>([])
+const showRelay = ref<boolean>(false)
 
 // 创作历史
 const recentCreations = ref<Array<{
