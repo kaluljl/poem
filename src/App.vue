@@ -72,6 +72,12 @@
         @success="handleAuthSuccess"
       />
 
+      <!-- AI 对话入口按钮与抽屉 -->
+      <button @click="chatOpen = true" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999; background: #3b82f6; color: white; padding: 15px 25px; border-radius: 10px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 16px; font-weight: bold;">
+        🤖 AI对话
+      </button>
+      <ChatSidebar :open="chatOpen" @close="chatOpen=false" />
+      
       <!-- 全局通知 -->
       <NotificationToast />
     </div>
@@ -89,6 +95,7 @@ import ProfilePage from '@/views/ProfilePage.vue'
 import PoemDetailPage from '@/views/PoemDetailPage.vue'
 import AuthModal from '@/components/AuthModal.vue'
 import NotificationToast from '@/components/NotificationToast.vue'
+import ChatSidebar from '@/components/ChatSidebar.vue'
 import { initAuth, signOut } from '@/lib/auth'
 
 // 应用状态
@@ -113,6 +120,7 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 // 简化的加载状态
 const isLoading = ref(true)
 const currentUser = ref<any>(null)
+const chatOpen = ref(false)
 
 // 导航函数
 function navigateTo(page: string, options?: { poemId?: string; poemType?: 'classic' | 'user' }) {

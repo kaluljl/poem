@@ -1,0 +1,125 @@
+{
+  "name": "AI诗词生成工作流",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "poetry",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "poetry"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:11434/api/generate",
+        "options": {
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "qwen3:4b"
+            },
+            {
+              "name": "prompt",
+              "value": "你是一位专业的诗词创作AI，请根据用户的要求创作一首优美的诗词。要求：\n1. 诗词要符合用户的主题要求\n2. 语言优美，意境深远\n3. 格式可以是古诗、现代诗或对联\n4. 每首诗都要有标题\n5. 用中文回复\n\n用户要求：{{ $json.message }}\n\n请创作一首诗词："
+            },
+            {
+              "name": "stream",
+              "value": "false"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "id": "ollama-ai",
+      "name": "Ollama AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "poetry",
+              "value": "={{ $json.response }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-response",
+      "name": "格式化回复",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"poetry\": $json.poetry } }}"
+      },
+      "id": "response",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Ollama AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama AI": {
+      "main": [
+        [
+          {
+            "node": "格式化回复",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "格式化回复": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "1"
+}
