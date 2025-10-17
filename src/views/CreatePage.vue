@@ -93,7 +93,7 @@
                   <button 
                     v-for="emotion in emotions" 
                     :key="emotion"
-                    @click="toggleEmotion(emotion)"
+                    @click="() => { console.log('🖱️ 情感按钮被点击:', emotion); toggleEmotion(emotion); }"
                     :class="[
                       'px-3 py-1.5 rounded-full text-sm border transition-colors',
                       creationForm.emotions.includes(emotion)
@@ -393,13 +393,20 @@ const canGenerate = computed(() => {
 
 // 方法
 function toggleEmotion(emotion: string) {
+  console.log('🎭 点击情感基调:', emotion)
+  console.log('📝 当前已选择的情感:', creationForm.value.emotions)
+  
   const emotions = creationForm.value.emotions
   const index = emotions.indexOf(emotion)
   if (index > -1) {
+    console.log('➖ 移除情感:', emotion)
     emotions.splice(index, 1)
   } else {
+    console.log('➕ 添加情感:', emotion)
     emotions.push(emotion)
   }
+  
+  console.log('📝 更新后的情感:', creationForm.value.emotions)
 }
 
 function clearForm() {
