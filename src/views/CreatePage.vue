@@ -44,6 +44,43 @@
             </div>
           </div>
 
+          <!-- AI接龙 面板 -->
+          <div v-if="selectedMode==='ai-collab'" class="card p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+              <span class="text-lg mr-2">🤝</span>
+              与AI接龙创作
+              <span style="margin-left: 12px; padding: 2px 10px; background: rgba(59,130,246,.08); color:#2563eb; border-radius: 999px; font-size: 12px; border:1px solid rgba(59,130,246,.25)">Beta</span>
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">接龙上下文</label>
+                <textarea v-model="relayContext" rows="6" class="input" placeholder="可粘贴你已写的句子；也可留空从主题开始"></textarea>
+                <p class="text-xs text-gray-500 mt-1">AI会在此基础上续写，保持体裁与意境一致</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <button @click="relayNext" :disabled="!creationForm.style || isGenerating"
+                        style="padding: 10px 16px; border-radius: 10px; border:none; color:#fff; background:linear-gradient(to right,#3b82f6,#8b5cf6); font-weight:600; cursor:pointer; box-shadow:0 4px 15px rgba(59,130,246,.3)"
+                        :style="{ opacity: (!creationForm.style || isGenerating) ? 0.5 : 1, cursor: (!creationForm.style || isGenerating) ? 'not-allowed' : 'pointer' }">
+                  让AI续写一句
+                </button>
+                <span class="text-xs text-gray-500">体裁以“创作参数”的选择为准</span>
+              </div>
+              <div v-if="relayLines.length" class="space-y-2">
+                <div class="text-sm text-gray-500">已续写</div>
+                <div v-for="(line,i) in relayLines" :key="i" class="px-3 py-2 rounded border border-gray-200 dark:border-gray-600">{{ line }}</div>
+              </div>
+              <div class="flex gap-3 pt-2">
+                <button @click="() => { generatedPoems.splice(0,generatedPoems.length, { title: creationForm.theme || '接龙成稿', content: relayContext, style: creationForm.style, theme: creationForm.theme, analysis: '' }); }"
+                        :disabled="!relayContext"
+                        style="padding: 10px 16px; border-radius: 10px; border:none; color:#fff; background:linear-gradient(to right,#10b981,#34d399); font-weight:600; cursor:pointer"
+                        :style="{ opacity: relayContext ? 1 : 0.5, cursor: relayContext ? 'pointer':'not-allowed' }">
+                  合并为成稿
+                </button>
+                <button @click="() => { relayContext=''; relayLines.splice(0); }" class="btn btn-outline">清空接龙</button>
+              </div>
+            </div>
+          </div>
+
           <!-- 创作模式选择 -->
           <div class="card p-6">
             <h2 class="text-xl font-semibold mb-4 flex items-center">
