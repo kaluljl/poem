@@ -25,6 +25,25 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- 左侧：创作面板 -->
         <div class="lg:col-span-2 space-y-6">
+          <!-- AI状态指示 -->
+          <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(to bottom right, #3b82f6, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                  <span style="color: white; font-size: 18px; font-weight: bold;">AI</span>
+                </div>
+                <div>
+                  <div style="font-weight: 600; color: #1f2937; font-size: 16px;">DeepSeek AI 创作引擎</div>
+                  <div style="color: #6b7280; font-size: 14px;">智能诗词创作，支持多种体裁和风格</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; color: #10b981; font-size: 14px; font-weight: 500;">
+                <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite;"></div>
+                在线
+              </div>
+            </div>
+          </div>
+
           <!-- 创作模式选择 -->
           <div class="card p-6">
             <h2 class="text-xl font-semibold mb-4 flex items-center">
@@ -121,21 +140,29 @@
                 <button 
                   @click="generatePoetry"
                   :disabled="isGenerating || !canGenerate"
-                  class="flex-1 btn btn-primary"
-                  :class="{ 'opacity-50 cursor-not-allowed': isGenerating || !canGenerate }"
+                  style="flex: 1; padding: 12px 24px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+                  :style="{ 
+                    opacity: (isGenerating || !canGenerate) ? 0.5 : 1,
+                    cursor: (isGenerating || !canGenerate) ? 'not-allowed' : 'pointer',
+                    transform: (isGenerating || !canGenerate) ? 'none' : 'translateY(0)'
+                  }"
+                  @mouseover="!isGenerating && canGenerate && ($event.target.style.transform = 'translateY(-2px)'); !isGenerating && canGenerate && ($event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)')"
+                  @mouseout="!isGenerating && canGenerate && ($event.target.style.transform = 'translateY(0)'); !isGenerating && canGenerate && ($event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)')"
                 >
-                  <span v-if="isGenerating" class="flex items-center justify-center">
-                    <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    AI创作中...
+                  <span v-if="isGenerating" style="display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 16px; height: 16px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px;"></div>
+                    🤖 AI创作中...
                   </span>
-                  <span v-else class="flex items-center justify-center">
-                    <span class="text-lg mr-2">✨</span>
-                    开始创作
+                  <span v-else style="display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 18px; margin-right: 8px;">✨</span>
+                    开始AI创作
                   </span>
                 </button>
                 <button 
                   @click="clearForm"
-                  class="btn btn-outline"
+                  style="padding: 12px 20px; border-radius: 12px; border: 2px solid #e5e7eb; background: white; color: #374151; font-weight: 500; cursor: pointer; transition: all 0.3s ease;"
+                  @mouseover="$event.target.style.background = '#f9fafb'; $event.target.style.borderColor = '#3b82f6'"
+                  @mouseout="$event.target.style.background = 'white'; $event.target.style.borderColor = '#e5e7eb'"
                 >
                   清空
                 </button>
@@ -147,7 +174,10 @@
           <div v-if="generatedPoems.length > 0" class="card p-6">
             <h3 class="text-lg font-semibold mb-4 flex items-center">
               <span class="text-lg mr-2">📝</span>
-              创作结果
+              AI创作结果
+              <span style="margin-left: 12px; padding: 4px 12px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 20px; font-size: 12px; color: #3b82f6; font-weight: 500;">
+                DeepSeek AI
+              </span>
             </h3>
             <div class="space-y-4">
               <div 
@@ -184,6 +214,9 @@
             <h3 class="text-lg font-semibold mb-4 flex items-center">
               <span class="text-lg mr-2">🤖</span>
               AI助手
+              <span style="margin-left: 8px; padding: 2px 8px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; font-size: 10px; color: #3b82f6; font-weight: 500;">
+                DeepSeek
+              </span>
             </h3>
             <div class="space-y-3">
               <button 

@@ -1,45 +1,47 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div class="min-h-screen" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
     <!-- 英雄区域 -->
     <section class="relative overflow-hidden">
-      <!-- 背景图片 -->
-      <div class="absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop&crop=center"
-          alt="诗词背景"
-          class="w-full h-full object-cover opacity-20"
-        >
-        <div class="absolute inset-0 bg-gradient-to-r from-amber-600/20 to-orange-600/20"></div>
-      </div>
+      <!-- 背景渐变 -->
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);"></div>
       
       <!-- 内容 -->
       <div class="relative container mx-auto px-4 py-24 md:py-32">
         <div class="text-center max-w-4xl mx-auto">
-          <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+          <!-- 品牌标识 -->
+          <div style="width: 80px; height: 80px; background: linear-gradient(to bottom right, #3b82f6, #8b5cf6); border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);">
+            <span style="color: white; font-size: 32px; font-weight: bold;">诗</span>
+          </div>
+          
+          <h1 style="font-size: 3.5rem; font-weight: 800; color: #1f2937; margin-bottom: 16px; line-height: 1.1;">
             诗境雅集
-            <span class="block text-2xl md:text-3xl font-normal text-amber-600 dark:text-amber-400 mt-2">
+            <span style="display: block; font-size: 1.5rem; font-weight: 400; color: #6b7280; margin-top: 8px;">
               AI诗词创作平台
             </span>
           </h1>
           
-          <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+          <p style="font-size: 1.25rem; color: #6b7280; margin-bottom: 32px; line-height: 1.6;">
             在这里，传统诗词与现代AI相遇<br>
             让每一个人都能体验诗词创作的美妙
           </p>
           
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center; align-items: center;">
             <button 
               @click="$emit('navigate', 'create')"
-              class="btn btn-primary text-lg px-8 py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+              style="background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; padding: 16px 32px; border-radius: 12px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3); transition: all 0.3s ease; transform: translateY(0);"
+              @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 15px 40px rgba(59, 130, 246, 0.4)'"
+              @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 10px 30px rgba(59, 130, 246, 0.3)'"
             >
-              <span class="mr-2">✨</span>
+              <span style="margin-right: 8px;">✨</span>
               开始AI创作
             </button>
             <button 
               @click="scrollToPoems"
-              class="btn btn-outline text-lg px-8 py-3 bg-white/80 backdrop-blur-sm hover:bg-white transition-all"
+              style="background: white; color: #374151; padding: 16px 32px; border-radius: 12px; border: 2px solid #e5e7eb; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;"
+              @mouseover="$event.target.style.background = '#f9fafb'; $event.target.style.borderColor = '#3b82f6'"
+              @mouseout="$event.target.style.background = 'white'; $event.target.style.borderColor = '#e5e7eb'"
             >
-              <span class="mr-2">📜</span>
+              <span style="margin-right: 8px;">📜</span>
               欣赏经典
             </button>
           </div>
@@ -47,59 +49,75 @@
       </div>
       
       <!-- 装饰元素 -->
-      <div class="absolute top-20 left-10 text-6xl opacity-10 animate-pulse">🌸</div>
-      <div class="absolute top-40 right-20 text-4xl opacity-10 animate-pulse delay-1000">🍃</div>
-      <div class="absolute bottom-20 left-20 text-5xl opacity-10 animate-pulse delay-2000">🌙</div>
+      <div style="position: absolute; top: 80px; left: 40px; font-size: 48px; opacity: 0.1; animation: float 3s ease-in-out infinite;">🌸</div>
+      <div style="position: absolute; top: 160px; right: 80px; font-size: 32px; opacity: 0.1; animation: float 3s ease-in-out infinite 1s;">🍃</div>
+      <div style="position: absolute; bottom: 80px; left: 80px; font-size: 40px; opacity: 0.1; animation: float 3s ease-in-out infinite 2s;">🌙</div>
     </section>
 
     <!-- 特色功能 -->
-    <section class="py-16 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
+    <section style="padding: 64px 0; background: white;">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">平台特色</h2>
-          <p class="text-gray-600 dark:text-gray-400">融合传统文化与现代科技，打造全新的诗词体验</p>
+        <div style="text-align: center; margin-bottom: 48px;">
+          <h2 style="font-size: 2.5rem; font-weight: 700; color: #1f2937; margin-bottom: 16px;">平台特色</h2>
+          <p style="color: #6b7280; font-size: 1.125rem;">融合传统文化与现代科技，打造全新的诗词体验</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <FeatureCard
-            icon="🤖"
-            title="AI智能创作"
-            description="先进的AI技术，根据您的主题和情感，生成优美的诗词作品"
-          />
-          <FeatureCard
-            icon="📚"
-            title="经典诗词库"
-            description="收录历代经典诗词，配有详细注释和赏析，传承文化精髓"
-          />
-          <FeatureCard
-            icon="🌸"
-            title="社区互动"
-            description="与诗词爱好者交流创作心得，分享作品，共同成长"
-          />
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; transition: all 0.3s ease;"
+               @mouseover="$event.target.style.transform = 'translateY(-4px)'; $event.target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)'"
+               @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)'">
+            <div style="width: 64px; height: 64px; background: linear-gradient(to bottom right, #3b82f6, #8b5cf6); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+              <span style="font-size: 28px;">🤖</span>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #1f2937; margin-bottom: 12px;">AI智能创作</h3>
+            <p style="color: #6b7280; line-height: 1.6;">先进的AI技术，根据您的主题和情感，生成优美的诗词作品</p>
+          </div>
+          
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; transition: all 0.3s ease;"
+               @mouseover="$event.target.style.transform = 'translateY(-4px)'; $event.target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)'"
+               @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)'">
+            <div style="width: 64px; height: 64px; background: linear-gradient(to bottom right, #10b981, #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+              <span style="font-size: 28px;">📚</span>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #1f2937; margin-bottom: 12px;">经典诗词库</h3>
+            <p style="color: #6b7280; line-height: 1.6;">收录历代经典诗词，配有详细注释和赏析，传承文化精髓</p>
+          </div>
+          
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb; transition: all 0.3s ease;"
+               @mouseover="$event.target.style.transform = 'translateY(-4px)'; $event.target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)'"
+               @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)'">
+            <div style="width: 64px; height: 64px; background: linear-gradient(to bottom right, #f59e0b, #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+              <span style="font-size: 28px;">🌸</span>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #1f2937; margin-bottom: 12px;">社区互动</h3>
+            <p style="color: #6b7280; line-height: 1.6;">与诗词爱好者交流创作心得，分享作品，共同成长</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 今日推荐 -->
-    <section class="py-16">
+    <section style="padding: 64px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">今日推荐</h2>
-          <p class="text-gray-600 dark:text-gray-400">精选经典诗词，感受千年文化魅力</p>
+        <div style="text-align: center; margin-bottom: 48px;">
+          <h2 style="font-size: 2.5rem; font-weight: 700; color: #1f2937; margin-bottom: 16px;">今日推荐</h2>
+          <p style="color: #6b7280; font-size: 1.125rem;">精选经典诗词，感受千年文化魅力</p>
         </div>
         
         <!-- 每日一诗 -->
-        <div class="max-w-4xl mx-auto mb-12">
-          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12 text-center">
-            <div class="text-sm text-amber-600 dark:text-amber-400 font-medium mb-4">每日一诗</div>
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ dailyPoem.title }}</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">{{ dailyPoem.author }} · {{ dailyPoem.dynasty }}</p>
-            <div class="text-lg leading-relaxed text-gray-800 dark:text-gray-200 serif mb-6 whitespace-pre-line">
+        <div style="max-width: 800px; margin: 0 auto 48px;">
+          <div style="background: white; border-radius: 20px; padding: 48px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb; text-align: center;">
+            <div style="font-size: 14px; color: #3b82f6; font-weight: 600; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">每日一诗</div>
+            <h3 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 8px;">{{ dailyPoem.title }}</h3>
+            <p style="color: #6b7280; margin-bottom: 24px; font-size: 1.125rem;">{{ dailyPoem.author }} · {{ dailyPoem.dynasty }}</p>
+            <div style="font-size: 1.25rem; line-height: 1.8; color: #374151; font-family: 'Noto Serif SC', serif; margin-bottom: 32px; white-space: pre-line;">
               {{ dailyPoem.content }}
             </div>
             <button 
               @click="viewPoemDetail(dailyPoem)"
-              class="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+              style="color: #3b82f6; font-weight: 600; background: none; border: none; cursor: pointer; font-size: 16px; transition: color 0.3s ease;"
+              @mouseover="$event.target.style.color = '#1d4ed8'"
+              @mouseout="$event.target.style.color = '#3b82f6'"
             >
               查看详情 →
             </button>
@@ -130,28 +148,32 @@
     </section>
 
     <!-- 创作灵感 -->
-    <section class="py-16 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-gray-800 dark:to-gray-700">
+    <section style="padding: 64px 0; background: white;">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">创作灵感</h2>
-          <p class="text-gray-600 dark:text-gray-400">从这些主题开始，创作属于您的诗词</p>
+        <div style="text-align: center; margin-bottom: 48px;">
+          <h2 style="font-size: 2.5rem; font-weight: 700; color: #1f2937; margin-bottom: 16px;">创作灵感</h2>
+          <p style="color: #6b7280; font-size: 1.125rem;">从这些主题开始，创作属于您的诗词</p>
         </div>
         
-        <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 32px;">
           <button
             v-for="theme in inspirationThemes"
             :key="theme"
             @click="startCreationWithTheme(theme)"
-            class="px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-amber-50 dark:hover:bg-gray-700 hover:text-amber-600 dark:hover:text-amber-400 transition-colors shadow-sm hover:shadow-md"
+            style="padding: 12px 24px; background: white; color: #374151; border-radius: 50px; border: 2px solid #e5e7eb; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);"
+            @mouseover="$event.target.style.background = '#f8fafc'; $event.target.style.borderColor = '#3b82f6'; $event.target.style.color = '#3b82f6'; $event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.2)'"
+            @mouseout="$event.target.style.background = 'white'; $event.target.style.borderColor = '#e5e7eb'; $event.target.style.color = '#374151'; $event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.05)'"
           >
             {{ theme }}
           </button>
         </div>
         
-        <div class="text-center">
+        <div style="text-align: center;">
           <button 
             @click="$emit('navigate', 'create')"
-            class="btn btn-primary"
+            style="background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; padding: 16px 32px; border-radius: 12px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3); transition: all 0.3s ease;"
+            @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 15px 40px rgba(59, 130, 246, 0.4)'"
+            @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 10px 30px rgba(59, 130, 246, 0.3)'"
           >
             立即开始创作
           </button>
@@ -160,41 +182,43 @@
     </section>
 
     <!-- 统计数据 -->
-    <section class="py-16 bg-white dark:bg-gray-800">
+    <section style="padding: 64px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
       <div class="container mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <StatCard
-            :value="stats.totalPoems"
-            label="收录诗词"
-            icon="📜"
-          />
-          <StatCard
-            :value="stats.totalUsers"
-            label="注册用户"
-            icon="👥"
-          />
-          <StatCard
-            :value="stats.totalCreations"
-            label="AI创作"
-            icon="✨"
-          />
-          <StatCard
-            :value="stats.totalLikes"
-            label="获得点赞"
-            icon="❤️"
-          />
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; text-align: center;">
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">📜</div>
+            <div style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 4px;">{{ stats.totalPoems }}</div>
+            <div style="color: #6b7280; font-weight: 500;">收录诗词</div>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">👥</div>
+            <div style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 4px;">{{ stats.totalUsers }}</div>
+            <div style="color: #6b7280; font-weight: 500;">注册用户</div>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">✨</div>
+            <div style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 4px;">{{ stats.totalCreations }}</div>
+            <div style="color: #6b7280; font-weight: 500;">AI创作</div>
+          </div>
+          <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e5e7eb;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">❤️</div>
+            <div style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 4px;">{{ stats.totalLikes }}</div>
+            <div style="color: #6b7280; font-weight: 500;">获得点赞</div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 底部CTA -->
-    <section class="py-16 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-4">加入诗境雅集</h2>
-        <p class="text-xl mb-8 opacity-90">与千万诗词爱好者一起，探索诗词创作的无限可能</p>
+    <section style="padding: 64px 0; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white;">
+      <div class="container mx-auto px-4" style="text-align: center;">
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 16px;">加入诗境雅集</h2>
+        <p style="font-size: 1.25rem; margin-bottom: 32px; opacity: 0.9;">与千万诗词爱好者一起，探索诗词创作的无限可能</p>
         <button 
           @click="$emit('navigate', 'community')"
-          class="btn bg-white text-amber-600 hover:bg-gray-100 text-lg px-8 py-3"
+          style="background: white; color: #3b82f6; padding: 16px 32px; border-radius: 12px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;"
+          @mouseover="$event.target.style.background = '#f8fafc'; $event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.3)'"
+          @mouseout="$event.target.style.background = 'white'; $event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)'"
         >
           加入社区
         </button>

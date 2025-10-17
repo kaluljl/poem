@@ -1,14 +1,18 @@
 <template>
-  <header class="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700 transition-colors">
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; transition: all 0.3s ease;">
     <div class="container mx-auto px-4">
-      <div class="flex items-center justify-between h-16">
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
         <!-- Logo和品牌 -->
-        <div class="flex items-center space-x-4">
+        <div style="display: flex; align-items: center; gap: 16px;">
           <button 
             @click="$emit('navigate', 'home')"
-            class="flex items-center space-x-2 text-xl font-bold text-amber-600 hover:text-amber-700 transition-colors"
+            style="display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; color: #3b82f6; transition: color 0.3s ease; background: none; border: none; cursor: pointer;"
+            @mouseover="$event.target.style.color = '#1d4ed8'"
+            @mouseout="$event.target.style.color = '#3b82f6'"
           >
-            <span class="text-2xl">📜</span>
+            <div style="width: 32px; height: 32px; background: linear-gradient(to bottom right, #3b82f6, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <span style="color: white; font-size: 16px; font-weight: bold;">诗</span>
+            </div>
             <span class="hidden sm:block">诗境雅集</span>
           </button>
           
@@ -160,7 +164,9 @@
           <button
             v-else
             @click="$emit('show-auth')"
-            class="btn btn-primary"
+            style="background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+            @mouseover="$event.target.style.transform = 'translateY(-1px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)'"
+            @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'"
           >
             登录
           </button>
