@@ -35,7 +35,11 @@
     </div>
 
     <div style="max-width: 1200px; margin: 0 auto; padding: 32px 16px;">
-      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+      <div :style="{ 
+        display: 'grid', 
+        gridTemplateColumns: window.innerWidth >= 1024 ? '3fr 1fr' : '1fr', 
+        gap: '24px' 
+      }">
         <!-- 主内容区 -->
         <div style="display: flex; flex-direction: column; gap: 24px;">
           <!-- 分类标签 -->
@@ -225,38 +229,38 @@
         </div>
 
         <!-- 右侧边栏 -->
-        <div class="space-y-6">
+        <div style="display: flex; flex-direction: column; gap: 24px;">
           <!-- 热门话题 -->
-          <div class="card p-6">
-            <h3 class="text-lg font-semibold mb-4 flex items-center">
-              <span class="text-lg mr-2">🔥</span>
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; color: #1f2937;">
+              <span style="font-size: 18px; margin-right: 8px;">🔥</span>
               热门话题
             </h3>
-            <div class="space-y-3">
-              <div v-for="topic in hotTopics" :key="topic.id" class="flex items-center justify-between">
-                <div class="flex-1">
-                  <div class="font-medium text-sm">#{{ topic.name }}</div>
-                  <div class="text-xs text-gray-600 dark:text-gray-400">{{ topic.posts }}篇作品</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div v-for="topic in hotTopics" :key="topic.id" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255, 255, 255, 0.5); border-radius: 12px; transition: all 0.3s ease;" @mouseover="$event.target.style.background = 'rgba(255, 255, 255, 0.8)'" @mouseout="$event.target.style.background = 'rgba(255, 255, 255, 0.5)'">
+                <div style="flex: 1;">
+                  <div style="font-weight: 500; font-size: 14px; color: #374151;">#{{ topic.name }}</div>
+                  <div style="font-size: 12px; color: #6b7280;">{{ topic.posts }}篇作品</div>
                 </div>
-                <div class="text-orange-500 text-sm">{{ topic.heat }}🔥</div>
+                <div style="color: #f59e0b; font-size: 14px; font-weight: 500;">{{ topic.heat }}🔥</div>
               </div>
             </div>
           </div>
 
           <!-- 推荐诗友 -->
-          <div class="card p-6">
-            <h3 class="text-lg font-semibold mb-4 flex items-center">
-              <span class="text-lg mr-2">👥</span>
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; color: #1f2937;">
+              <span style="font-size: 18px; margin-right: 8px;">👥</span>
               推荐诗友
             </h3>
-            <div class="space-y-4">
-              <div v-for="user in recommendedUsers" :key="user.id" class="flex items-center gap-3">
-                <img :src="user.avatar_url || defaultAvatar" :alt="user.display_name" class="w-10 h-10 rounded-full object-cover">
-                <div class="flex-1">
-                  <div class="font-medium text-sm">{{ user.display_name || user.username }}</div>
-                  <div class="text-xs text-gray-600 dark:text-gray-400">{{ user.total_poems }}篇作品</div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div v-for="user in recommendedUsers" :key="user.id" style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.5); border-radius: 12px; transition: all 0.3s ease;" @mouseover="$event.target.style.background = 'rgba(255, 255, 255, 0.8)'" @mouseout="$event.target.style.background = 'rgba(255, 255, 255, 0.5)'">
+                <img :src="user.avatar_url || defaultAvatar" :alt="user.display_name" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                <div style="flex: 1;">
+                  <div style="font-weight: 500; font-size: 14px; color: #374151;">{{ user.display_name || user.username }}</div>
+                  <div style="font-size: 12px; color: #6b7280;">{{ user.total_poems }}篇作品</div>
                 </div>
-                <button class="px-3 py-1 rounded-full text-xs bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300">
+                <button style="padding: 6px 12px; border-radius: 20px; font-size: 12px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); cursor: pointer; transition: all 0.3s ease;" @mouseover="$event.target.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)'" @mouseout="$event.target.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)'">
                   关注
                 </button>
               </div>
@@ -264,18 +268,18 @@
           </div>
 
           <!-- 创作挑战 -->
-          <div class="card p-6">
-            <h3 class="text-lg font-semibold mb-4 flex items-center">
-              <span class="text-lg mr-2">🎯</span>
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; color: #1f2937;">
+              <span style="font-size: 18px; margin-right: 8px;">🎯</span>
               创作挑战
             </h3>
-            <div class="space-y-4">
-              <div v-for="challenge in challenges" :key="challenge.id" class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                <div class="font-medium text-sm mb-2">{{ challenge.title }}</div>
-                <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">{{ challenge.description }}</div>
-                <div class="flex items-center justify-between">
-                  <div class="text-xs text-purple-600">{{ challenge.participant_count }}人参与</div>
-                  <button class="px-3 py-1 rounded-full text-xs bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div v-for="challenge in challenges" :key="challenge.id" style="border: 1px solid rgba(229, 231, 235, 0.3); border-radius: 12px; padding: 16px; background: rgba(255, 255, 255, 0.5); transition: all 0.3s ease;" @mouseover="$event.target.style.background = 'rgba(255, 255, 255, 0.8)'" @mouseout="$event.target.style.background = 'rgba(255, 255, 255, 0.5)'">
+                <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; color: #374151;">{{ challenge.title }}</div>
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 12px;">{{ challenge.description }}</div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="font-size: 12px; color: #7c3aed; font-weight: 500;">{{ challenge.participant_count }}人参与</div>
+                  <button style="padding: 6px 12px; border-radius: 20px; font-size: 12px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); cursor: pointer; transition: all 0.3s ease;" @mouseover="$event.target.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)'" @mouseout="$event.target.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)'">
                     参与
                   </button>
                 </div>
