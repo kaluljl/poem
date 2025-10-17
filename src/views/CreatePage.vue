@@ -89,17 +89,26 @@
               <!-- 情感基调 -->
               <div>
                 <label class="block text-sm font-medium mb-2">情感基调</label>
-                <div class="flex flex-wrap gap-2">
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1;">
                   <button 
                     v-for="emotion in emotions" 
                     :key="emotion"
-                    @click="() => { console.log('🖱️ 情感按钮被点击:', emotion); toggleEmotion(emotion); }"
-                    :class="[
-                      'px-3 py-1.5 rounded-full text-sm border transition-colors',
-                      creationForm.emotions.includes(emotion)
-                        ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-300'
-                        : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600'
-                    ]"
+                    @click="toggleEmotion(emotion)"
+                    :style="{
+                      padding: '6px 12px',
+                      borderRadius: '20px',
+                      fontSize: '14px',
+                      border: '1px solid',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      backgroundColor: creationForm.emotions.includes(emotion) ? '#e9d5ff' : '#f3f4f6',
+                      color: creationForm.emotions.includes(emotion) ? '#7c3aed' : '#374151',
+                      borderColor: creationForm.emotions.includes(emotion) ? '#a855f7' : '#d1d5db',
+                      zIndex: 10,
+                      position: 'relative'
+                    }"
+                    @mouseover="$event.target.style.backgroundColor = creationForm.emotions.includes(emotion) ? '#d8b4fe' : '#e5e7eb'"
+                    @mouseout="$event.target.style.backgroundColor = creationForm.emotions.includes(emotion) ? '#e9d5ff' : '#f3f4f6'"
                   >
                     {{ emotion }}
                   </button>
