@@ -1,27 +1,31 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div style="min-height: 100vh; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fde68a 100%);">
     <!-- 页面头部 -->
-    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
-      <div class="container mx-auto px-4 py-6">
-        <div class="flex items-center justify-between">
+    <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(229, 231, 235, 0.3);">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 24px 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white flex items-center">
-              <span class="text-3xl mr-3">🌸</span>
+            <h1 style="font-size: 2rem; font-weight: bold; color: #1f2937; display: flex; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 2.5rem; margin-right: 12px;">🌸</span>
               诗友社区
             </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">与诗词爱好者分享创作，交流心得</p>
+            <p style="color: #6b7280; font-size: 16px;">与诗词爱好者分享创作，交流心得</p>
           </div>
-          <div class="flex gap-3">
+          <div style="display: flex; gap: 12px;">
             <button 
               @click="showPublishModal = true"
-              class="btn btn-primary"
+              style="padding: 12px 24px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
+              @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)'"
+              @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'"
             >
-              <span class="mr-2">📝</span>
+              <span style="margin-right: 8px;">📝</span>
               发布作品
             </button>
             <button 
               @click="$emit('navigate', 'home')"
-              class="btn btn-outline"
+              style="padding: 12px 20px; border-radius: 12px; border: 2px solid #e5e7eb; background: white; color: #374151; font-weight: 500; cursor: pointer; transition: all 0.3s ease;"
+              @mouseover="$event.target.style.background = '#f9fafb'; $event.target.style.borderColor = '#3b82f6'"
+              @mouseout="$event.target.style.background = 'white'; $event.target.style.borderColor = '#e5e7eb'"
             >
               返回首页
             </button>
@@ -30,31 +34,40 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 py-8">
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 32px 16px;">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
         <!-- 主内容区 -->
-        <div class="lg:col-span-3 space-y-6">
+        <div style="display: flex; flex-direction: column; gap: 24px;">
           <!-- 分类标签 -->
-          <div class="card p-4">
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="text-sm font-medium">分类：</span>
+          <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
+              <span style="font-size: 14px; font-weight: 500; color: #374151;">分类：</span>
               <button 
                 v-for="category in categories" 
                 :key="category.id"
                 @click="selectedCategory = category.id"
-                :class="[
-                  'px-4 py-1.5 rounded-full text-sm transition-colors',
-                  selectedCategory === category.id 
-                    ? 'bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-900/30 dark:text-purple-300' 
-                    : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600'
-                ]"
+                :style="{
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '14px',
+                  border: '1px solid',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  backgroundColor: selectedCategory === category.id ? '#e9d5ff' : '#f3f4f6',
+                  color: selectedCategory === category.id ? '#7c3aed' : '#374151',
+                  borderColor: selectedCategory === category.id ? '#a855f7' : '#d1d5db'
+                }"
+                @mouseover="$event.target.style.backgroundColor = selectedCategory === category.id ? '#d8b4fe' : '#e5e7eb'"
+                @mouseout="$event.target.style.backgroundColor = selectedCategory === category.id ? '#e9d5ff' : '#f3f4f6'"
               >
                 {{ category.icon }} {{ category.name }}
               </button>
               <button 
                 v-if="selectedCategory"
                 @click="selectedCategory = ''"
-                class="px-3 py-1.5 rounded-full text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                style="padding: 6px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #d1d5db; color: #6b7280; cursor: pointer; transition: all 0.3s ease; background: #f9fafb;"
+                @mouseover="$event.target.style.backgroundColor = '#e5e7eb'"
+                @mouseout="$event.target.style.backgroundColor = '#f9fafb'"
               >
                 清空
               </button>
@@ -62,8 +75,8 @@
           </div>
 
           <!-- 作品流 -->
-          <div v-if="loading" class="space-y-6">
-            <div v-for="i in 3" :key="i" class="card p-6 animate-pulse">
+          <div v-if="loading" style="display: flex; flex-direction: column; gap: 24px;">
+            <div v-for="i in 3" :key="i" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); animation: pulse 2s infinite;">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
                 <div>
@@ -80,11 +93,13 @@
             </div>
           </div>
 
-          <div v-else class="space-y-6">
+          <div v-else style="display: flex; flex-direction: column; gap: 24px;">
             <article 
               v-for="post in filteredPosts" 
               :key="post.id"
-              class="card p-6 hover:shadow-lg transition-shadow"
+              style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%); backdrop-filter: blur(20px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s ease;"
+              @mouseover="$event.target.style.transform = 'translateY(-2px)'; $event.target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.15)'"
+              @mouseout="$event.target.style.transform = 'translateY(0)'; $event.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)'"
             >
               <!-- 作者信息 -->
               <div class="flex items-center justify-between mb-4">
@@ -197,8 +212,13 @@
           </div>
 
           <!-- 加载更多 -->
-          <div v-if="hasMore && !loading" class="text-center">
-            <button @click="loadMore" class="btn btn-outline">
+          <div v-if="hasMore && !loading" style="text-align: center;">
+            <button 
+              @click="loadMore" 
+              style="padding: 12px 24px; border-radius: 12px; border: 2px solid #e5e7eb; background: white; color: #374151; font-weight: 500; cursor: pointer; transition: all 0.3s ease;"
+              @mouseover="$event.target.style.background = '#f9fafb'; $event.target.style.borderColor = '#3b82f6'"
+              @mouseout="$event.target.style.background = 'white'; $event.target.style.borderColor = '#e5e7eb'"
+            >
               加载更多作品
             </button>
           </div>
