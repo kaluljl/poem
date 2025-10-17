@@ -17,7 +17,7 @@ export const chatState = reactive({
 })
 
 // 使用云端AI API
-const DEEPSEEK_API_KEY = 'sk-4a55934ecbe04920aced01b92cb38a4b' // DeepSeek API密钥
+const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY || 'sk-4a55934ecbe04920aced01b92cb38a4b' // DeepSeek API密钥
 const DEEPSEEK_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions'
 
 // 备用：使用 n8n 工作流

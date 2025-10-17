@@ -24,7 +24,7 @@ export interface RhymeResult {
 // DeepSeek AI诗词创作服务
 export class AIPoetryService {
   private static instance: AIPoetryService
-  private readonly DEEPSEEK_API_KEY = 'sk-4a55934ecbe04920aced01b92cb38a4b'
+  private readonly DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY || 'sk-4a55934ecbe04920aced01b92cb38a4b'
   private readonly DEEPSEEK_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions'
   
   static getInstance(): AIPoetryService {
