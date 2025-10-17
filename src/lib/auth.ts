@@ -6,7 +6,9 @@ import { ref, computed } from 'vue'
 // 认证状态
 export const currentUser = ref<User | null>(null)
 export const currentSession = ref<Session | null>(null)
-export const isAuthenticated = computed(() => !!currentUser.value)
+// 游客模式标记
+export const isGuest = ref<boolean>(false)
+export const isAuthenticated = computed(() => !!currentUser.value || isGuest.value)
 export const isLoading = ref(true)
 
 // 初始化认证状态
@@ -22,11 +24,22 @@ export async function initAuth() {
       currentUser.value = session?.user || null
     }
     
+    // 初始化本地游客会话
+    const guestRaw = localStorage.getItem('guest_session')
+    if (guestRaw) {
+      isGuest.value = true
+    }
+
     // 监听认证状态变化
     supabase.auth.onAuthStateChange((event, session) => {
       console.log('认证状态变化:', event, session?.user?.email)
       currentSession.value = session
       currentUser.value = session?.user || null
+      if (session?.user) {
+        // 一旦获得真实用户会话，清除游客状态
+        isGuest.value = false
+        localStorage.removeItem('guest_session')
+      }
       
       if (event === 'SIGNED_IN') {
         console.log('用户已登录')
@@ -117,6 +130,9 @@ export async function signOut() {
     
     currentUser.value = null
     currentSession.value = null
+    // 同时清除游客状态
+    isGuest.value = false
+    localStorage.removeItem('guest_session')
   } catch (error) {
     console.error('登出失败:', error)
     throw error
@@ -287,5 +303,26 @@ export function canEditPoem(poemUserId: string): boolean {
 
 // 获取当前用户ID
 export function getCurrentUserId(): string | null {
-  return currentUser.value?.id || null
+  if (currentUser.value?.id) return currentUser.value.id
+  if (isGuest.value) return 'guest'
+  return null
+}
+
+// 游客登录（本地会话，不访问服务端）
+export function signInAsGuest(): { user: any, session: null } {
+  const guestProfile = {
+    id: 'guest',
+    username: 'guest',
+    display_name: '游客',
+    isGuest: true,
+  }
+  // 仅设置本地标志，供应用逻辑识别
+  isGuest.value = true
+  localStorage.setItem('guest_session', '1')
+  // 兼容应用现有的本地会话检查
+  try {
+    localStorage.setItem('poetry_session', '1')
+    localStorage.setItem('poetry_user', JSON.stringify(guestProfile))
+  } catch {}
+  return { user: guestProfile, session: null }
 }

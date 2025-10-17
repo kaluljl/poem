@@ -223,6 +223,15 @@
                 取消登录
               </button>
             </div>
+            <!-- 游客体验 -->
+            <div style="text-align: center; padding-top: 12px;">
+              <button @click="handleGuest"
+                      style="width: 100%; height: 44px; border-radius: 12px; border: 1px dashed rgba(59,130,246,.4); background: rgba(59,130,246,.06); color: #2563eb; font-weight: 600; cursor: pointer; transition: all .3s ease;"
+                      @mouseover="$event.target.style.background='rgba(59,130,246,.12)'"
+                      @mouseout="$event.target.style.background='rgba(59,130,246,.06)'">
+                先体验一下（游客模式）
+              </button>
+            </div>
 
             <!-- 错误提示 -->
             <div v-if="error" style="background: linear-gradient(135deg, rgba(254, 242, 242, 0.9) 0%, rgba(252, 231, 243, 0.9) 100%); border: 1px solid #fecaca; color: #dc2626; padding: 16px; border-radius: 12px; font-size: 14px; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);">
@@ -239,6 +248,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { signInWithEmail } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
+import { signInAsGuest } from '@/lib/auth'
 
 const emit = defineEmits<{
   (e: 'close'): void
@@ -251,6 +261,15 @@ const showPassword = ref(false)
 const remember = ref(true)
 const error = ref('')
 const isRegister = ref(true)
+function handleGuest() {
+  try {
+    const { user } = signInAsGuest()
+    // 向外广播成功事件，保持与正常登录一致
+    emit('success', { user, session: null })
+  } catch (e) {
+    console.error('游客登录失败', e)
+  }
+}
 
 // 事件处理函数
 function handleRegisterHover(event: Event) {
