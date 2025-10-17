@@ -138,7 +138,7 @@
               <!-- 创作按钮 -->
               <div class="flex gap-3 pt-4">
                 <button 
-                  @click="generatePoetry"
+                  @click="() => { console.log('🖱️ 按钮被点击了!'); generatePoetry(); }"
                   :disabled="isGenerating || !canGenerate"
                   style="flex: 1; padding: 12px 24px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(to right, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);"
                   :style="{ 
@@ -385,7 +385,10 @@ const recentCreations = ref<Array<{
 
 // 计算属性
 const canGenerate = computed(() => {
-  return creationForm.value.theme.trim() && creationForm.value.style
+  const hasTheme = creationForm.value.theme.trim().length > 0
+  const hasStyle = creationForm.value.style.length > 0
+  console.log('📊 表单验证状态:', { hasTheme, hasStyle, theme: creationForm.value.theme, style: creationForm.value.style })
+  return hasTheme && hasStyle
 })
 
 // 方法
@@ -409,14 +412,25 @@ function clearForm() {
 }
 
 async function generatePoetry() {
-  if (!canGenerate.value) return
+  console.log('🎨 开始创作按钮被点击')
+  console.log('📝 表单数据:', creationForm.value)
+  console.log('✅ 是否可以生成:', canGenerate.value)
+  
+  if (!canGenerate.value) {
+    console.log('❌ 表单验证失败，无法生成')
+    alert('请填写创作主题和选择诗词体裁')
+    return
+  }
   
   // 检查登录状态
+  console.log('🔐 检查登录状态:', isAuthenticated.value)
   if (!requireAuth()) {
+    console.log('❌ 用户未登录')
     alert('请先登录后再进行创作')
     return
   }
   
+  console.log('🚀 开始AI创作...')
   isGenerating.value = true
   
   try {

@@ -36,7 +36,8 @@ export class AIPoetryService {
 
   // 生成诗词 - 使用DeepSeek AI
   async generatePoetry(request: CreationRequest): Promise<PoemResult[]> {
-    console.log('开始使用DeepSeek AI生成诗词:', request)
+    console.log('🤖 AI服务开始生成诗词:', request)
+    console.log('🔑 API密钥状态:', this.DEEPSEEK_API_KEY ? '已配置' : '未配置')
     
     try {
       const prompt = this.buildPoetryPrompt(request)
